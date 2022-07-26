@@ -1,0 +1,17 @@
+Package: rdBART
+Type: Package
+Title: BART for Regression Discontinuity Designs
+Version: 1.0
+Date: 2022-07-26
+Author: Rafael Alcantara
+Maintainer: Questions and comments <rafaelca10@al.insper.br>
+Description: Implements an extension of the BART algorithm to estimate treatment effects in RDD models
+License: What license is it under?
+Depends: Rcpp (>= 1.0.8.3), RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo
+NeedsCompilation: yes
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+LazyData: true
+RoxygenNote: 6.1.1
+Encoding: UTF-8

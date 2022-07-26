@@ -1,0 +1,42 @@
+//#include <RcppArmadillo.h>
+#include "tree.h"
+#include "treeProposal.h"
+#include "utilities.h"
+#include "metropolis.h"
+#include "gibbs.h"
+
+// [[Rcpp::export]]
+Rcpp::List rdBART(const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, double alpha, double beta, int m, int nDraws, int burn)
+{
+  // To update in the inner loop
+  Rcpp::List treeList;
+  for (int i=0; i<m; i++) treeList.push_back(node(1,NA_INTEGER,NA_INTEGER));
+  Rcpp::List thetaList = thetaDrawsList(treeList,W,X,y,m,10);
+  Rcpp::List yFitList;
+  for (int i=0; i<m; i++) yFitList.push_back(yDraw(treeList[i],W,X,y,m,10,thetaList[i]));
+  arma::mat accept(nDraws,m);
+  // To update in the outter loop
+  arma::vec sigDraws(nDraws,10);
+  // Output
+  Rcpp::List yFitDraws;
+
+  for (int i=0; i<nDraws; i++)
+    {
+      arma::mat yFitDraw(X.nrow(),X.ncol());
+      for (int j=0; j<m; j++)
+	{
+	  arma::vec residual = partialResid(treeList,j,W,X,y,m,sigDraws[i],thetaList);
+	  Rcpp::List propTree = proposal(treeList[j],W);
+	  Rcpp::List nt = newTree(treeList[j],propTree,W,X,y,m,sigDraws[i],alpha,beta);
+	  treeList[j]  = nt["tree"];
+	  accept(i,j)  = nt["acc"];
+	  thetaList[j] = thetaDraw(treeList[j],W,X,y,m,sigDraws[i]);
+	  arma::mat yFitj = yDraw(treeList[j],W,X,y,m,sigDraws[i],thetaList[j]);
+	  yFitList[j]  = yFitj;
+	  yFitDraw += yFitj;
+	}
+      yFitDraws.push_back(yFitDraw);
+    }
+  Rcpp::List out = Rcpp::List::create(Rcpp::Named("Theta") = yFitDraws, Rcpp::Named("Accept") = accept);
+  return out;
+}

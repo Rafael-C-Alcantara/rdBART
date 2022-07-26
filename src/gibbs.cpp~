@@ -1,0 +1,14 @@
+#include "tree.h"
+#include "treeProposal.h"
+#include "utilities.h"
+#include "metropolis.h"
+#include "gibbs.h"
+
+// [[Rcpp::export]]
+Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma)
+{
+  arma::mat armaX = Rcpp::as<arma::mat>(Rcpp::wrap(X));
+  Rcpp::List Lambda = lambdaPosterior(tree,W,armaX,m,sigma);
+  Rcpp::List theta  = thetaPosterior(tree,W,X,y,Lambda,sigma);
+  return theta;
+}

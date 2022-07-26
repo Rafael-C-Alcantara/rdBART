@@ -1,0 +1,14 @@
+#include <RcppArmadillo.h>
+#include "tree.h"
+#include "treeProposal.h"
+#include "utilities.h"
+#include "metropolis.h"
+#include "gibbs.h"
+
+// [[Rcpp::export]]
+Rcpp::List rdBART(int m)
+{
+  Rcpp::List out;
+  for (int i=0; i<m; i++) out.push_back(node(1,NA_INTEGER,NA_INTEGER));
+  return out;
+}

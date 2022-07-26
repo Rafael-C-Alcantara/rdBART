@@ -1,0 +1,7 @@
+#ifndef GUARD_gibbs_h
+#define GUARD_gibbs_h
+#include <RcppArmadillo.h>
+
+Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma);
+
+#endif

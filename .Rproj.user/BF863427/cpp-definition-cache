@@ -1,0 +1,504 @@
+[
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
+        "file_last_write": 1658868161.0,
+        "definitions": [
+            {
+                "usr": "c:@F@thetaDraw#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "thetaDraw(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec &, int, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
+                "line": 9,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@yDraw#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#I#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "yDraw(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec &, int, double, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
+                "line": 22,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@thetaDrawsList#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "thetaDrawsList(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec &, int, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
+                "line": 42,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@partialResid#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#I#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "partialResid(Rcpp::List, int, const arma::mat &, Rcpp::NumericMatrix, const Rcpp::NumericVector &, int, double, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
+                "line": 54,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.h",
+        "file_last_write": 1658868226.0,
+        "definitions": []
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+        "file_last_write": 1658845576.0,
+        "definitions": [
+            {
+                "usr": "c:@F@lambdaPosteriorOne#&1$@N@arma@S@Mat>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "lambdaPosteriorOne(const arma::mat &, int, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 7,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@lambdaPosterior#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "lambdaPosterior(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, int, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 18,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@thetaPosteriorOne#&1$@N@arma@S@Mat>#d#&1$@N@arma@S@Col>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "thetaPosteriorOne(const arma::mat &, const arma::vec &, const arma::mat &, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 33,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@thetaPosterior#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "thetaPosterior(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec &, Rcpp::List, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 39,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@logLikTree#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#1$@N@arma@S@Col>#d#I#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "logLikTree(Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec, int, double, Rcpp::List, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 61,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@mhRatio#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#1$@N@arma@S@Col>#d#I#d#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mhRatio(Rcpp::List, Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec, int, double, double, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 95,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@newTree#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#1$@N@arma@S@Col>#d#I#d#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "newTree(Rcpp::List, Rcpp::List, const arma::mat &, Rcpp::NumericMatrix, const arma::vec, int, double, double, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
+                "line": 128,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.h",
+        "file_last_write": 1658858024.0,
+        "definitions": []
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/rdBART.cpp",
+        "file_last_write": 1658878200.0,
+        "definitions": [
+            {
+                "usr": "c:@F@rdBART#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#d#d#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rdBART(const arma::mat &, Rcpp::NumericMatrix, const arma::vec &, double, double, int, int, int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/rdBART.cpp",
+                "line": 9,
+                "column": 21
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+        "file_last_write": 1658845607.0,
+        "definitions": [
+            {
+                "usr": "c:@F@node#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "node(int, int, int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 4,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@splits#&1$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "splits(const arma::mat &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 11,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@getAvalSplits#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getAvalSplits(Rcpp::List, Rcpp::List &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 21,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@avalSplits#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "avalSplits(Rcpp::List, Rcpp::List &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 36,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@getBottomNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getBottomNodes(Rcpp::List, Rcpp::NumericVector &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 55,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@bottomNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "bottomNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 70,
+                "column": 21
+            },
+            {
+                "usr": "c:@F@nBottomNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nBottomNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 77,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@getNogNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getNogNodes(Rcpp::List, Rcpp::NumericVector &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 85,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@nogNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nogNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 100,
+                "column": 21
+            },
+            {
+                "usr": "c:@F@nNogNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nNogNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 107,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@getInternalNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getInternalNodes(Rcpp::List, Rcpp::NumericVector &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 123,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@internalNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "internalNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 143,
+                "column": 21
+            },
+            {
+                "usr": "c:@F@nInternalNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nInternalNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 150,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@getPCNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "getPCNodes(Rcpp::List, Rcpp::List &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 161,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@pcNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pcNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 191,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@nPCNodes#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nPCNodes(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 198,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@nodeDepth#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "nodeDepth(int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 214,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@pSplit#I#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pSplit(int, double, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 222,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@pAllSplits#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pAllSplits(Rcpp::List, double, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 228,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@pRules#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pRules(Rcpp::List, Rcpp::List &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 237,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@pTree#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pTree(Rcpp::List, Rcpp::List, double, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
+                "line": 255,
+                "column": 8
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.h",
+        "file_last_write": 1658855426.0,
+        "definitions": []
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+        "file_last_write": 1658845622.0,
+        "definitions": [
+            {
+                "usr": "c:@F@splitNode#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "splitNode(Rcpp::List, int, int, int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 5,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@grow#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grow(Rcpp::List, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 24,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@pruneNode#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "pruneNode(Rcpp::List, int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 46,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@prune#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "prune(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 64,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@changeNode#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "changeNode(Rcpp::List, int, int, int)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 76,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@change#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "change(Rcpp::List, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 92,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@swapNode#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "swapNode(Rcpp::List, Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 115,
+                "column": 6
+            },
+            {
+                "usr": "c:@F@swap#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "swap(Rcpp::List)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 151,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@fitObs#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Row>#d#&1$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "fitObs(Rcpp::List, const arma::rowvec &, const arma::mat &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 163,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@fit#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "fit(Rcpp::List, const arma::mat &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 182,
+                "column": 21
+            },
+            {
+                "usr": "c:@F@proposalMove#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "proposalMove(Rcpp::List, const arma::mat &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 194,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@proposal#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "proposal(Rcpp::List, const arma::mat &)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
+                "line": 212,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.h",
+        "file_last_write": 1658855445.0,
+        "definitions": []
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
+        "file_last_write": 1658847200.0,
+        "definitions": [
+            {
+                "usr": "c:@F@whichCpp#&1$@N@arma@S@Col>#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "whichCpp(const arma::vec &, double)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
+                "line": 6,
+                "column": 21
+            },
+            {
+                "usr": "c:@F@whichList#&1$@N@arma@S@Col>#d#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "whichList(const arma::vec &, Rcpp::NumericVector)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
+                "line": 13,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@splitMatrix#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "splitMatrix(Rcpp::NumericMatrix, const arma::vec &, Rcpp::NumericVector)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
+                "line": 20,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@mvrnormArma#I#$@N@arma@S@Col>#d#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mvrnormArma(int, arma::vec, arma::mat)",
+                "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
+                "line": 39,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.h",
+        "file_last_write": 1658855456.0,
+        "definitions": []
+    }
+]
