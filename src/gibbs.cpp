@@ -3,74 +3,78 @@
 #include "utilities.h"
 #include "metropolis.h"
 #include "gibbs.h"
+//#include <Rcpp/Benchmark/Timer.h>
 
 // Obtain draws of theta for each node
 // [[Rcpp::export]]
-Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma)
+Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda)
 {
   Rcpp::List out;
-  Rcpp::List Lambda = lambdaPosterior(tree,W,X,m,sigma);
-  Rcpp::List theta  = thetaPosterior(tree,W,X,y,Lambda,sigma);
   for (int i=0; i<theta.length(); i++)
     {
       out.push_back(mvrnormArma(1,theta[i],Lambda[i]));
     }
   return out;
 }
+
 // Assign the correct draw for each y
 // [[Rcpp::export]]
-arma::mat yDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma, Rcpp::List draws)
+arma::mat yDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& yFit, Rcpp::List draws)
 {
-  Rcpp::IntegerVector yFit = fit(tree,W);
-  Rcpp::NumericVector bn = bottomNodes(tree);
-  int params = X.ncol();
-  int obs = X.nrow();
-  arma::mat out(obs,params);
-  
-  for (int i=0; i<yFit.length(); i++)
+  arma::vec bn = bottomNodes(tree);
+  int nobs = W.n_rows;
+  int npar = X.n_cols;
+  arma::mat out(nobs,npar);
+  for (int i=0; i<nobs; i++)
     {
-      for (int j=0; j<bn.length(); j++)
-	{
-	  arma::mat draw = draws[j];
-	  if (yFit[i] == bn[j]) out.row(i) = draw;
-	}
+      arma::rowvec w = W.row(i);
+      arma::uvec which = arma::find(bn == yFit[i]);
+      int whichInt = arma::conv_to<int>::from(which);
+      arma::mat draw = draws[whichInt];
+      out.row(i) = draw;
     }
-  return out;
+  return(out);
 }
-// Calculate draws for list of trees
+
+// Assign the correct fit for each y by bottom node
 // [[Rcpp::export]]
-Rcpp::List thetaDrawsList(Rcpp::List treeList, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma)
+arma::vec yPred(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& yFit, arma::mat yDraws)
 {
-  Rcpp::List out;
-  for (int i=0; i<treeList.length(); i++)
-    {
-      Rcpp::List tree = treeList[i];
-      out.push_back(thetaDraw(tree,W,X,y,m,sigma));
-    }
-  return out;
+  arma::mat out = yDraws%X;
+  return(arma::sum(out,1));
 }
+
 // Calculate partial residuals given list of trees
 // [[Rcpp::export]]
-arma::vec partialResid(Rcpp::List treeList, int remove, const arma::mat& W, Rcpp::NumericMatrix X, const Rcpp::NumericVector& y, int m, double sigma, Rcpp::List draws)
+arma::vec partialResid(const arma::vec& y, const arma::mat& yPredMat, int remove)
 {
-  arma::mat armaX = Rcpp::as<arma::mat>(Rcpp::wrap(X));
-  Rcpp::NumericVector outRcpp = Rcpp::clone(y);
-  arma::vec out = Rcpp::as<arma::vec>(Rcpp::wrap(outRcpp));
-  for (int i=0; i<treeList.length(); i++)
-    {
-      if (i!=remove-1)
-	{
-	  Rcpp::List tree   = treeList[i];
-	  Rcpp::List draw   = draws[i];
-	  arma::mat yDraws  = yDraw(tree,W,X,y,m,sigma,draw);
-	  arma::mat treeFit = yDraws%armaX;
-	  arma::mat treeFitSum = arma::cumsum(treeFit,1);
-	  arma::vec treeFitCol = treeFitSum.col(0);
-	  out -= treeFitCol;
-	} else
-	{
-	  continue;
-	}
-    }
+  arma::vec out = y - arma::sum(yPredMat,1) + yPredMat.col(remove);
   return out;
+}
+
+// Compute residuals sum of squares for given tree
+// [[Rcpp::export]]
+double treeRSS(const arma::vec& yPred, const arma::vec& y)
+{
+  arma::vec resid = y-yPred;
+  return(dot(resid,resid));
+}
+
+// Compute residual sum of squares for tree list
+// [[Rcpp::export]]
+double treeListRSS(const arma::mat& yPredMat, const arma::vec& y)
+{
+  double out = 0.0;
+  for (int i=0; i<yPredMat.n_cols; i++) out += treeRSS(yPredMat.col(i),y);
+  return out;
+}
+
+// Sample sigma
+// [[Rcpp::export]]
+double sigPost(double nu, double lambda, int m, int nobs, const arma::mat& yPredMat, const arma::vec& y)
+{
+  double a = 0.5*(nu+m*nobs);
+  double b = 0.5*(nu*lambda + treeListRSS(yPredMat,y));
+  double g = R::rgamma(a,1/b);
+  return 1/g;
 }

@@ -1,7 +1,7 @@
 [
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.cpp",
-        "file_last_write": 1658868161.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@thetaDraw#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#I#d#",
@@ -43,12 +43,12 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/gibbs.h",
-        "file_last_write": 1658868226.0,
+        "file_last_write": 1658879783.0,
         "definitions": []
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.cpp",
-        "file_last_write": 1658845576.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@lambdaPosteriorOne#&1$@N@arma@S@Mat>#d#I#d#",
@@ -117,12 +117,12 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/metropolis.h",
-        "file_last_write": 1658858024.0,
+        "file_last_write": 1658879783.0,
         "definitions": []
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/rdBART.cpp",
-        "file_last_write": 1658878200.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@rdBART#&1$@N@arma@S@Mat>#d#$@N@Rcpp@S@Matrix>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1$@N@arma@S@Col>#d#d#d#I#I#I#",
@@ -137,7 +137,7 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.cpp",
-        "file_last_write": 1658845607.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@node#I#I#I#",
@@ -332,12 +332,12 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/tree.h",
-        "file_last_write": 1658855426.0,
+        "file_last_write": 1658879783.0,
         "definitions": []
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.cpp",
-        "file_last_write": 1658845622.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@splitNode#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#",
@@ -451,12 +451,12 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/treeProposal.h",
-        "file_last_write": 1658855445.0,
+        "file_last_write": 1658879783.0,
         "definitions": []
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.cpp",
-        "file_last_write": 1658847200.0,
+        "file_last_write": 1658879783.0,
         "definitions": [
             {
                 "usr": "c:@F@whichCpp#&1$@N@arma@S@Col>#d#d#",
@@ -498,7 +498,7 @@
     },
     {
         "file": "/home/rafael/Dropbox/PackagesR/rdBART/src/utilities.h",
-        "file_last_write": 1658855456.0,
+        "file_last_write": 1658879783.0,
         "definitions": []
     }
 ]

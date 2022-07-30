@@ -24,21 +24,29 @@ void splitNode(Rcpp::List tree, int nodeID, int var, int val)
 Rcpp::List grow(Rcpp::List tree, Rcpp::List splits)
 {
   Rcpp::List treeNew = Rcpp::clone(tree);
-  Rcpp::NumericVector bn = bottomNodes(treeNew);
+
+  // Select bottom node
+  arma::vec bn = bottomNodes(treeNew);
+  Rcpp::IntegerVector bnR = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(bn));
+  int bot = bnR[0];
+  
+  // Select variable
   Rcpp::List s = avalSplits(treeNew, splits);
-  Rcpp::NumericVector bot = Rcpp::sample(bn, 1);
-  int outBot = bot[0];
   int nvar = s.length();;
   Rcpp::IntegerVector seqVar = Rcpp::seq(1,nvar);
   Rcpp::IntegerVector var = Rcpp::sample(seqVar, 1);
   int outVar = var[0];
+
+  // Select value
   Rcpp::List svar = s[outVar-1];
   int nval = svar.length();
   Rcpp::IntegerVector seqVal = Rcpp::seq(1,nval);
   Rcpp::IntegerVector val = Rcpp::sample(seqVal, 1);
   int outVal = val[0];
-  splitNode(treeNew,outBot,outVar,outVal);
-  Rcpp::List output = Rcpp::List::create(Rcpp::Named("tree") = treeNew, Rcpp::Named("node") = outBot);
+
+  // Grow tree
+  splitNode(treeNew,bot,outVar,outVal);
+  Rcpp::List output = Rcpp::List::create(Rcpp::Named("tree") = treeNew, Rcpp::Named("node") = bot);
   return(output);
 }
 
@@ -64,11 +72,15 @@ void pruneNode(Rcpp::List tree, int nodeID)
 Rcpp::List prune(Rcpp::List tree)
 {
   Rcpp::List treeNew = Rcpp::clone(tree);
-  Rcpp::NumericVector nn  = nogNodes(treeNew);
-  Rcpp::NumericVector nog = Rcpp::sample(nn,1);
-  int outBot = nog[0];
-  pruneNode(treeNew,outBot);
-  Rcpp::List output = Rcpp::List::create(Rcpp::Named("tree") = treeNew, Rcpp::Named("node") = outBot);
+
+  // Select node
+  arma::vec nn  = nogNodes(treeNew);
+  Rcpp::IntegerVector nnR = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(nn));
+  int nog = nnR[0];
+
+  // Prune tree
+  pruneNode(treeNew,nog);
+  Rcpp::List output = Rcpp::List::create(Rcpp::Named("tree") = treeNew, Rcpp::Named("node") = nog);
   return(output);
 }
 
@@ -93,21 +105,26 @@ Rcpp::List change(Rcpp::List tree, Rcpp::List splits)
 {
   // Sample internal node to change
   Rcpp::List treeNew = Rcpp::clone(tree);
-  Rcpp::NumericVector nodes  = internalNodes(treeNew);
-  Rcpp::NumericVector intNod = Rcpp::sample(nodes,1);
-  int nod = intNod[0];
+  arma::vec nodes  = internalNodes(treeNew);
+  Rcpp::IntegerVector nodesR = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(nodes));
+  int node = nodesR[0];
+  
   // Sample variable to choose for split
   Rcpp::List s = avalSplits(treeNew, splits);
   int nvar     = s.length();
   Rcpp::IntegerVector seqVar = Rcpp::seq(1,nvar);
   Rcpp::IntegerVector var = Rcpp::sample(seqVar, 1);
   int outVar = var[0];
+
+  // Sample value for split
   Rcpp::List svar = s[outVar-1];
   int nval = svar.length();
   Rcpp::IntegerVector seqVal = Rcpp::seq(1,nval);
   Rcpp::IntegerVector val = Rcpp::sample(seqVal, 1);
   int outVal = val[0];
-  changeNode(treeNew,nod,outVar,outVal);
+
+  // Change tree
+  changeNode(treeNew,node,outVar,outVal);
   return(treeNew);
 }
 
@@ -179,14 +196,14 @@ int fitObs(Rcpp::List tree, const arma::rowvec& w, const arma::mat& W)
     }
 }
 // [[Rcpp::export]]
-Rcpp::IntegerVector fit(Rcpp::List tree, const arma::mat& W)
+arma::vec fit(Rcpp::List tree, const arma::mat& W)
 {
   int nobs = W.n_rows;
-  Rcpp::IntegerVector out(nobs);
+  arma::vec out(nobs);
   for (int i=0; i<nobs; i++)
     {
       arma::rowvec w = W.row(i);
-      out[i] = fitObs(tree,w,W);
+      out(i) = fitObs(tree,w,W);
     }
   return(out);
 }
@@ -194,16 +211,25 @@ Rcpp::IntegerVector fit(Rcpp::List tree, const arma::mat& W)
 int proposalMove(Rcpp::List tree, const arma::mat& W)
 {
   // Function to sample valid moves for proposal
-  Rcpp::IntegerVector fitVec = fit(tree,W);
-  Rcpp::IntegerVector fitTab = Rcpp::table(fitVec);
+  arma::vec fitVec = fit(tree,W);
+  Rcpp::IntegerVector rcppFit = Rcpp::as<Rcpp::IntegerVector>(Rcpp::wrap(fitVec));
+  Rcpp::IntegerVector fitTab = Rcpp::table(rcppFit);
   int minFit = Rcpp::min(fitTab);
   int nbot = nBottomNodes(tree);
   int nint = nInternalNodes(tree);
   int npc  = nPCNodes(tree);
+
+  // Setting probabilities of each move
   Rcpp::NumericVector probs = {.25,.25,.4,.1};
+
+  // Sample move
   Rcpp::IntegerVector moveVec = Rcpp::sample(4,1,probs);
   int move = moveVec[0];
+
+  // List invalid moves: 1: not grow when nbot=1; 2: change or swap when there are no internal nodes; 3: swap when there are no pcPair nodes; 4: grow when there are bottom nodes with 1 obs (avoid empty nodes)
   bool invalid = (move > 1 && nbot == 1)|(move > 2 && nint == 0)|(move == 4 && npc == 0)|(move == 1 && minFit == 1);
+
+  // Recursion: if move is invalid, sample again until move is valid
   if (invalid) return(proposalMove(tree,W));
   return(move);
 }

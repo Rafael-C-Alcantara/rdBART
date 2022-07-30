@@ -12,69 +12,103 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // thetaDraw
-Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma);
-RcppExport SEXP _rdBART_thetaDraw(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP) {
+Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda);
+RcppExport SEXP _rdBART_thetaDraw(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP thetaSEXP, SEXP LambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(thetaDraw(tree, W, X, y, m, sigma));
+    Rcpp::traits::input_parameter< Rcpp::List >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type Lambda(LambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(thetaDraw(tree, W, X, y, m, sigma, theta, Lambda));
     return rcpp_result_gen;
 END_RCPP
 }
 // yDraw
-arma::mat yDraw(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma, Rcpp::List draws);
-RcppExport SEXP _rdBART_yDraw(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP drawsSEXP) {
+arma::mat yDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& yFit, Rcpp::List draws);
+RcppExport SEXP _rdBART_yDraw(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP yFitSEXP, SEXP drawsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type yFit(yFitSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type draws(drawsSEXP);
-    rcpp_result_gen = Rcpp::wrap(yDraw(tree, W, X, y, m, sigma, draws));
+    rcpp_result_gen = Rcpp::wrap(yDraw(tree, W, X, yFit, draws));
     return rcpp_result_gen;
 END_RCPP
 }
-// thetaDrawsList
-Rcpp::List thetaDrawsList(Rcpp::List treeList, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, int m, double sigma);
-RcppExport SEXP _rdBART_thetaDrawsList(SEXP treeListSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP) {
+// yPred
+arma::vec yPred(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& yFit, arma::mat yDraws);
+RcppExport SEXP _rdBART_yPred(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP yFitSEXP, SEXP yDrawsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type treeList(treeListSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(thetaDrawsList(treeList, W, X, y, m, sigma));
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type yFit(yFitSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type yDraws(yDrawsSEXP);
+    rcpp_result_gen = Rcpp::wrap(yPred(tree, W, X, yFit, yDraws));
     return rcpp_result_gen;
 END_RCPP
 }
 // partialResid
-arma::vec partialResid(Rcpp::List treeList, int remove, const arma::mat& W, Rcpp::NumericMatrix X, const Rcpp::NumericVector& y, int m, double sigma, Rcpp::List draws);
-RcppExport SEXP _rdBART_partialResid(SEXP treeListSEXP, SEXP removeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP drawsSEXP) {
+arma::vec partialResid(const arma::vec& y, const arma::mat& yPredMat, int remove);
+RcppExport SEXP _rdBART_partialResid(SEXP ySEXP, SEXP yPredMatSEXP, SEXP removeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type treeList(treeListSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type yPredMat(yPredMatSEXP);
     Rcpp::traits::input_parameter< int >::type remove(removeSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(partialResid(y, yPredMat, remove));
+    return rcpp_result_gen;
+END_RCPP
+}
+// treeRSS
+double treeRSS(const arma::vec& yPred, const arma::vec& y);
+RcppExport SEXP _rdBART_treeRSS(SEXP yPredSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type yPred(yPredSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(treeRSS(yPred, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// treeListRSS
+double treeListRSS(const arma::mat& yPredMat, const arma::vec& y);
+RcppExport SEXP _rdBART_treeListRSS(SEXP yPredMatSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type yPredMat(yPredMatSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(treeListRSS(yPredMat, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sigPost
+double sigPost(double nu, double lambda, int m, int nobs, const arma::mat& yPredMat, const arma::vec& y);
+RcppExport SEXP _rdBART_sigPost(SEXP nuSEXP, SEXP lambdaSEXP, SEXP mSEXP, SEXP nobsSEXP, SEXP yPredMatSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type draws(drawsSEXP);
-    rcpp_result_gen = Rcpp::wrap(partialResid(treeList, remove, W, X, y, m, sigma, draws));
+    Rcpp::traits::input_parameter< int >::type nobs(nobsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type yPredMat(yPredMatSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(sigPost(nu, lambda, m, nobs, yPredMat, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -92,14 +126,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // lambdaPosterior
-Rcpp::List lambdaPosterior(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, int m, double sigma);
+Rcpp::List lambdaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, int m, double sigma);
 RcppExport SEXP _rdBART_lambdaPosterior(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP mSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     rcpp_result_gen = Rcpp::wrap(lambdaPosterior(tree, W, X, m, sigma));
@@ -121,14 +155,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // thetaPosterior
-Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, Rcpp::List Lambda, double sigma);
+Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, Rcpp::List Lambda, double sigma);
 RcppExport SEXP _rdBART_thetaPosterior(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP LambdaSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type Lambda(LambdaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
@@ -137,15 +171,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // logLikTree
-double logLikTree(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda);
+double logLikTree(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda);
 RcppExport SEXP _rdBART_logLikTree(SEXP treeSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP thetaSEXP, SEXP LambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type theta(thetaSEXP);
@@ -155,58 +189,62 @@ BEGIN_RCPP
 END_RCPP
 }
 // mhRatio
-double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, double alpha, double beta);
-RcppExport SEXP _rdBART_mhRatio(SEXP treeSEXP, SEXP treeNewSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const arma::mat& X, const arma::vec y, int m, double sigma, double alpha, double beta, double ll0);
+RcppExport SEXP _rdBART_mhRatio(SEXP treeSEXP, SEXP treeNewSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP ll0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type treeNew(treeNewSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
-    rcpp_result_gen = Rcpp::wrap(mhRatio(tree, treeNew, W, X, y, m, sigma, alpha, beta));
+    Rcpp::traits::input_parameter< double >::type ll0(ll0SEXP);
+    rcpp_result_gen = Rcpp::wrap(mhRatio(tree, treeNew, W, X, y, m, sigma, alpha, beta, ll0));
     return rcpp_result_gen;
 END_RCPP
 }
 // newTree
-Rcpp::List newTree(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, double alpha, double beta);
-RcppExport SEXP _rdBART_newTree(SEXP treeSEXP, SEXP treeNewSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+Rcpp::List newTree(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const arma::mat& X, const arma::vec y, int m, double sigma, double alpha, double beta, double ll0);
+RcppExport SEXP _rdBART_newTree(SEXP treeSEXP, SEXP treeNewSEXP, SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP mSEXP, SEXP sigmaSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP ll0SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type treeNew(treeNewSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec >::type y(ySEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
-    rcpp_result_gen = Rcpp::wrap(newTree(tree, treeNew, W, X, y, m, sigma, alpha, beta));
+    Rcpp::traits::input_parameter< double >::type ll0(ll0SEXP);
+    rcpp_result_gen = Rcpp::wrap(newTree(tree, treeNew, W, X, y, m, sigma, alpha, beta, ll0));
     return rcpp_result_gen;
 END_RCPP
 }
 // rdBART
-Rcpp::NumericVector rdBART(const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, double alpha, double beta, int m, int nDraws, int burn);
-RcppExport SEXP _rdBART_rdBART(SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP mSEXP, SEXP nDrawsSEXP, SEXP burnSEXP) {
+Rcpp::List rdBART(const arma::mat& W, const arma::mat& X, const arma::vec& y, double alpha, double beta, double nu, double lambda, int m, int nDraws, int burn);
+RcppExport SEXP _rdBART_rdBART(SEXP WSEXP, SEXP XSEXP, SEXP ySEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP nuSEXP, SEXP lambdaSEXP, SEXP mSEXP, SEXP nDrawsSEXP, SEXP burnSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< int >::type m(mSEXP);
     Rcpp::traits::input_parameter< int >::type nDraws(nDrawsSEXP);
     Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    rcpp_result_gen = Rcpp::wrap(rdBART(W, X, y, alpha, beta, m, nDraws, burn));
+    rcpp_result_gen = Rcpp::wrap(rdBART(W, X, y, alpha, beta, nu, lambda, m, nDraws, burn));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -231,6 +269,169 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type W(WSEXP);
     rcpp_result_gen = Rcpp::wrap(splits(W));
+    return rcpp_result_gen;
+END_RCPP
+}
+// avalSplits
+Rcpp::List avalSplits(Rcpp::List tree, Rcpp::List& splits);
+RcppExport SEXP _rdBART_avalSplits(SEXP treeSEXP, SEXP splitsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type splits(splitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(avalSplits(tree, splits));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bottomNodes
+arma::vec bottomNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_bottomNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(bottomNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nBottomNodes
+int nBottomNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_nBottomNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(nBottomNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nogNodes
+arma::vec nogNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_nogNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(nogNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nNogNodes
+int nNogNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_nNogNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(nNogNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// internalNodes
+arma::vec internalNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_internalNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(internalNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nInternalNodes
+int nInternalNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_nInternalNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(nInternalNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pcNodes
+Rcpp::List pcNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_pcNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(pcNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nPCNodes
+int nPCNodes(Rcpp::List tree);
+RcppExport SEXP _rdBART_nPCNodes(SEXP treeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    rcpp_result_gen = Rcpp::wrap(nPCNodes(tree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// nodeDepth
+int nodeDepth(int nodeID);
+RcppExport SEXP _rdBART_nodeDepth(SEXP nodeIDSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type nodeID(nodeIDSEXP);
+    rcpp_result_gen = Rcpp::wrap(nodeDepth(nodeID));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pSplit
+double pSplit(int nodeID, double alpha, double beta);
+RcppExport SEXP _rdBART_pSplit(SEXP nodeIDSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type nodeID(nodeIDSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pSplit(nodeID, alpha, beta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pAllSplits
+double pAllSplits(Rcpp::List tree, double alpha, double beta);
+RcppExport SEXP _rdBART_pAllSplits(SEXP treeSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pAllSplits(tree, alpha, beta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pRules
+double pRules(Rcpp::List tree, Rcpp::List& splits);
+RcppExport SEXP _rdBART_pRules(SEXP treeSEXP, SEXP splitsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type splits(splitsSEXP);
+    rcpp_result_gen = Rcpp::wrap(pRules(tree, splits));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pTree
+double pTree(Rcpp::List tree, Rcpp::List splits, double alpha, double beta);
+RcppExport SEXP _rdBART_pTree(SEXP treeSEXP, SEXP splitsSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type tree(treeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type splits(splitsSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pTree(tree, splits, alpha, beta));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -281,7 +482,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // fit
-Rcpp::IntegerVector fit(Rcpp::List tree, const arma::mat& W);
+arma::vec fit(Rcpp::List tree, const arma::mat& W);
 RcppExport SEXP _rdBART_fit(SEXP treeSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -305,7 +506,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // whichCpp
-Rcpp::NumericVector whichCpp(const arma::vec& vec, double value);
+arma::vec whichCpp(const arma::vec& vec, double value);
 RcppExport SEXP _rdBART_whichCpp(SEXP vecSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -317,26 +518,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // whichList
-Rcpp::List whichList(const arma::vec& vec, Rcpp::NumericVector values);
+Rcpp::List whichList(const arma::vec& vec, const arma::vec& values);
 RcppExport SEXP _rdBART_whichList(SEXP vecSEXP, SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::vec& >::type vec(vecSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type values(valuesSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type values(valuesSEXP);
     rcpp_result_gen = Rcpp::wrap(whichList(vec, values));
     return rcpp_result_gen;
 END_RCPP
 }
 // splitMatrix
-Rcpp::List splitMatrix(Rcpp::NumericMatrix M, const arma::vec& vec, Rcpp::NumericVector values);
+Rcpp::List splitMatrix(const arma::mat& M, const arma::vec& vec, const arma::vec& values);
 RcppExport SEXP _rdBART_splitMatrix(SEXP MSEXP, SEXP vecSEXP, SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type M(MSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type M(MSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type vec(vecSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type values(valuesSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type values(valuesSEXP);
     rcpp_result_gen = Rcpp::wrap(splitMatrix(M, vec, values));
     return rcpp_result_gen;
 END_RCPP
@@ -356,20 +557,37 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rdBART_thetaDraw", (DL_FUNC) &_rdBART_thetaDraw, 6},
-    {"_rdBART_yDraw", (DL_FUNC) &_rdBART_yDraw, 7},
-    {"_rdBART_thetaDrawsList", (DL_FUNC) &_rdBART_thetaDrawsList, 6},
-    {"_rdBART_partialResid", (DL_FUNC) &_rdBART_partialResid, 8},
+    {"_rdBART_thetaDraw", (DL_FUNC) &_rdBART_thetaDraw, 8},
+    {"_rdBART_yDraw", (DL_FUNC) &_rdBART_yDraw, 5},
+    {"_rdBART_yPred", (DL_FUNC) &_rdBART_yPred, 5},
+    {"_rdBART_partialResid", (DL_FUNC) &_rdBART_partialResid, 3},
+    {"_rdBART_treeRSS", (DL_FUNC) &_rdBART_treeRSS, 2},
+    {"_rdBART_treeListRSS", (DL_FUNC) &_rdBART_treeListRSS, 2},
+    {"_rdBART_sigPost", (DL_FUNC) &_rdBART_sigPost, 6},
     {"_rdBART_lambdaPosteriorOne", (DL_FUNC) &_rdBART_lambdaPosteriorOne, 3},
     {"_rdBART_lambdaPosterior", (DL_FUNC) &_rdBART_lambdaPosterior, 5},
     {"_rdBART_thetaPosteriorOne", (DL_FUNC) &_rdBART_thetaPosteriorOne, 4},
     {"_rdBART_thetaPosterior", (DL_FUNC) &_rdBART_thetaPosterior, 6},
     {"_rdBART_logLikTree", (DL_FUNC) &_rdBART_logLikTree, 8},
-    {"_rdBART_mhRatio", (DL_FUNC) &_rdBART_mhRatio, 9},
-    {"_rdBART_newTree", (DL_FUNC) &_rdBART_newTree, 9},
-    {"_rdBART_rdBART", (DL_FUNC) &_rdBART_rdBART, 8},
+    {"_rdBART_mhRatio", (DL_FUNC) &_rdBART_mhRatio, 10},
+    {"_rdBART_newTree", (DL_FUNC) &_rdBART_newTree, 10},
+    {"_rdBART_rdBART", (DL_FUNC) &_rdBART_rdBART, 10},
     {"_rdBART_node", (DL_FUNC) &_rdBART_node, 3},
     {"_rdBART_splits", (DL_FUNC) &_rdBART_splits, 1},
+    {"_rdBART_avalSplits", (DL_FUNC) &_rdBART_avalSplits, 2},
+    {"_rdBART_bottomNodes", (DL_FUNC) &_rdBART_bottomNodes, 1},
+    {"_rdBART_nBottomNodes", (DL_FUNC) &_rdBART_nBottomNodes, 1},
+    {"_rdBART_nogNodes", (DL_FUNC) &_rdBART_nogNodes, 1},
+    {"_rdBART_nNogNodes", (DL_FUNC) &_rdBART_nNogNodes, 1},
+    {"_rdBART_internalNodes", (DL_FUNC) &_rdBART_internalNodes, 1},
+    {"_rdBART_nInternalNodes", (DL_FUNC) &_rdBART_nInternalNodes, 1},
+    {"_rdBART_pcNodes", (DL_FUNC) &_rdBART_pcNodes, 1},
+    {"_rdBART_nPCNodes", (DL_FUNC) &_rdBART_nPCNodes, 1},
+    {"_rdBART_nodeDepth", (DL_FUNC) &_rdBART_nodeDepth, 1},
+    {"_rdBART_pSplit", (DL_FUNC) &_rdBART_pSplit, 3},
+    {"_rdBART_pAllSplits", (DL_FUNC) &_rdBART_pAllSplits, 3},
+    {"_rdBART_pRules", (DL_FUNC) &_rdBART_pRules, 2},
+    {"_rdBART_pTree", (DL_FUNC) &_rdBART_pTree, 4},
     {"_rdBART_grow", (DL_FUNC) &_rdBART_grow, 2},
     {"_rdBART_prune", (DL_FUNC) &_rdBART_prune, 1},
     {"_rdBART_change", (DL_FUNC) &_rdBART_change, 2},

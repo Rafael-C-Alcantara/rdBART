@@ -3,31 +3,32 @@
 // Split matrix for tapply-like functions
 // Find rows to split (equivalent to R function which)
 // [[Rcpp::export]]
-Rcpp::NumericVector whichCpp(const arma::vec& vec, double value)
+arma::vec whichCpp(const arma::vec& vec, double value)
 {
-  arma::uvec out = arma::find(vec == value);
-  Rcpp::NumericVector outR = Rcpp::NumericVector(out.begin(),out.end());
-  return(outR);
+  arma::uvec which = arma::find(vec == value);
+  // Return position of elements (0-index)
+  arma::vec ret = arma::conv_to<arma::vec>::from(which);
+  return(ret);
 }
 // [[Rcpp::export]]
-Rcpp::List whichList(const arma::vec& vec, Rcpp::NumericVector values)
+Rcpp::List whichList(const arma::vec& vec, const arma::vec& values)
 {
   Rcpp::List out;
-  for (int i=0; i<values.length(); i++) out.push_back(whichCpp(vec,values(i)));
+  for (int i=0; i<values.n_elem; i++) out.push_back(whichCpp(vec,values(i)));
   return out;
 }
 // [[Rcpp::export]]
-Rcpp::List splitMatrix(Rcpp::NumericMatrix M, const arma::vec& vec, Rcpp::NumericVector values)
+Rcpp::List splitMatrix(const arma::mat& M, const arma::vec& vec, const arma::vec& values)
 {
   Rcpp::List rows = whichList(vec,values);
   Rcpp::List out;
   for (int i=0; i<rows.length(); i++)
     {
-      Rcpp::NumericVector rowsVec = rows[i];
-      Rcpp::NumericMatrix X(rowsVec.length(),M.ncol());
-      for (int j=0; j<rowsVec.length(); j++)
+      arma::vec rowsVec = rows[i];
+      arma::mat X(rowsVec.n_elem,M.n_cols);
+      for (int j=0; j<rowsVec.n_elem; j++)
 	{
-	  X.row(j) = M.row(rowsVec[j]);
+	  X.row(j) = M.row(rowsVec(j));
 	}
       out.push_back(X);
     }

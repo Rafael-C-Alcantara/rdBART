@@ -3,32 +3,34 @@
 #include "utilities.h"
 #include "metropolis.h"
 
+// Calculate posterior covariance matrix
 // [[Rcpp::export]]
 arma::mat lambdaPosteriorOne(const arma::mat& Xnode, int m, double sigma)
 {
   int k = Xnode.n_cols;
   arma::mat priorInv = arma::eye(k,k);
-  priorInv.diag() *= m;
+  priorInv.diag() *= 100*m;
   arma::mat XtX = Xnode.t()*Xnode/sigma;
   arma::mat out = arma::inv(priorInv+XtX);
   return(out);
 }
 
 // [[Rcpp::export]]
-Rcpp::List lambdaPosterior(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, int m, double sigma)
+Rcpp::List lambdaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, int m, double sigma)
 {
   Rcpp::List out;
-  Rcpp::IntegerVector yfit = fit(tree,W);
-  arma::vec armaYfit = Rcpp::as<arma::vec>(Rcpp::wrap(yfit));
-  Rcpp::NumericVector bn = bottomNodes(tree);
-  Rcpp::List splitList = splitMatrix(X,armaYfit,bn);
+  arma::vec yfit = fit(tree,W);
+  arma::vec bn = bottomNodes(tree);
+  Rcpp::List splitList = splitMatrix(X,yfit,bn);
   for (int i=0; i<splitList.length(); i++)
     {
-      arma::mat armaX = Rcpp::as<arma::mat>(Rcpp::wrap(splitList[i]));
-      out.push_back(lambdaPosteriorOne(armaX,m,sigma));
+      arma::mat Xi = splitList[i];
+      out.push_back(lambdaPosteriorOne(Xi,m,sigma));
     }
   return out;
 }
+
+// Calculate posterior mean vector
 // [[Rcpp::export]]
 arma::vec thetaPosteriorOne(const arma::mat& X, const arma::vec& y, const arma::mat& Lambda, double sigma)
 {
@@ -36,51 +38,44 @@ arma::vec thetaPosteriorOne(const arma::mat& X, const arma::vec& y, const arma::
 }
 
 // [[Rcpp::export]]
-Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec& y, Rcpp::List Lambda, double sigma)
+Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, Rcpp::List Lambda, double sigma)
 {
   Rcpp::List out;
-  Rcpp::NumericMatrix rcppY = Rcpp::as<Rcpp::NumericMatrix>(Rcpp::wrap(y));
-  Rcpp::IntegerVector yfit = fit(tree,W);
-  arma::vec armaYfit = Rcpp::as<arma::vec>(Rcpp::wrap(yfit));
-  Rcpp::NumericVector bn = bottomNodes(tree);
-  Rcpp::List splitListX = splitMatrix(X,armaYfit,bn);
-  Rcpp::List splitListY = splitMatrix(rcppY,armaYfit,bn);
+  arma::vec yfit = fit(tree,W);
+  arma::vec bn = bottomNodes(tree);
+  Rcpp::List splitListX = splitMatrix(X,yfit,bn);
+  Rcpp::List splitListY = splitMatrix(y,yfit,bn);
   for (int i=0; i<splitListX.length(); i++)
     {
-      Rcpp::NumericMatrix Xi = splitListX[i];
-      Rcpp::NumericMatrix Yi = splitListY[i];
-      arma::mat armaX = Rcpp::as<arma::mat>(Rcpp::wrap(Xi));
-      arma::vec armaY = Rcpp::as<arma::vec>(Rcpp::wrap(Yi));
+      arma::mat Xi = splitListX[i];
+      arma::vec Yi = splitListY[i];
       arma::mat Lambdai = Lambda[i];
-      out.push_back(thetaPosteriorOne(armaX,armaY,Lambdai,sigma));
+      out.push_back(thetaPosteriorOne(Xi,Yi,Lambdai,sigma));
     }
   return out;
 }
 
+// Calculate tree log-likelihood
 //[[Rcpp::export]]
-double logLikTree(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda)
+double logLikTree(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda)
 {
-  int k = X.ncol();
-  double logm = std::log(m)*k;
-  Rcpp::NumericMatrix rcppY = Rcpp::as<Rcpp::NumericMatrix>(Rcpp::wrap(y));
-  Rcpp::IntegerVector yfit = fit(tree,W);
-  arma::vec armaYfit = Rcpp::as<arma::vec>(Rcpp::wrap(yfit));
-  Rcpp::NumericVector bn = bottomNodes(tree);
-  Rcpp::List splitListX = splitMatrix(X,armaYfit,bn);
-  Rcpp::List splitListY = splitMatrix(rcppY,armaYfit,bn);
+  int k = X.n_cols;
+  double logm = std::log(100*m)*k;
+  arma::vec yfit = fit(tree,W);
+  arma::vec bn = bottomNodes(tree);
+  Rcpp::List splitListX = splitMatrix(X,yfit,bn);
+  Rcpp::List splitListY = splitMatrix(y,yfit,bn);
   double a = 0.0;
   double b = 0.0;
   for (int i=0; i<splitListY.length(); i++)
     {
-      Rcpp::NumericMatrix Xi = splitListX[i];
-      Rcpp::NumericMatrix Yi = splitListY[i];
-      arma::mat armaX = Rcpp::as<arma::mat>(Rcpp::wrap(Xi));
-      arma::vec armaY = Rcpp::as<arma::vec>(Rcpp::wrap(Yi));
+      arma::mat Xi = splitListX[i];
+      arma::vec Yi = splitListY[i];
       arma::vec thetai = theta[i];
       arma::mat Lambdai = Lambda[i];
       arma::mat linv = arma::inv(Lambdai);
       double tLt = (thetai.t()*linv*thetai).eval()(0,0);
-      double expTerm = arma::dot(armaY,armaY)/sigma - tLt;
+      double expTerm = arma::dot(Yi,Yi)/sigma - tLt;
       a += expTerm;
       double det;
       double sign;
@@ -91,16 +86,16 @@ double logLikTree(Rcpp::List tree, const arma::mat& W, Rcpp::NumericMatrix X, co
   b *= 0.5;
   return(a+b);
 }
+
+// Calculate MH ratio
 // [[Rcpp::export]]
-double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, double alpha, double beta)
+double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const arma::mat& X, const arma::vec y, int m, double sigma, double alpha, double beta, double ll0)
 {
   int move = treeNew["move"];
+  std::cout << move << '\n';
   Rcpp::List tree1 = treeNew["tree"];
-  Rcpp::List Lambda0 = lambdaPosterior(tree,W,X,m,sigma);
-  Rcpp::List theta0 = thetaPosterior(tree,W,X,y,Lambda0,sigma);
   Rcpp::List Lambda1 = lambdaPosterior(tree1,W,X,m,sigma);
   Rcpp::List theta1 = thetaPosterior(tree1,W,X,y,Lambda1,sigma);
-  double ll0 = logLikTree(tree,W,X,y,m,sigma,theta0,Lambda0);
   double ll1 = logLikTree(tree1,W,X,y,m,sigma,theta1,Lambda1);
   if (move==1)
     {
@@ -119,18 +114,20 @@ double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, Rcpp::Nu
     } else
     {
       Rcpp::List s = splits(W);
+      Rcpp::List s1 = Rcpp::clone(s);
       double p0 = pTree(tree,s,alpha,beta);
-      double p1 = pTree(tree1,s,alpha,beta);
+      double p1 = pTree(tree1,s1,alpha,beta);
       return ll1-ll0+std::log(p1)-std::log(p0);
     }
 }
+
+// Sample new tree
 // [[Rcpp::export]]
-Rcpp::List newTree(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, Rcpp::NumericMatrix X, const arma::vec y, int m, double sigma, double alpha, double beta)
+Rcpp::List newTree(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const arma::mat& X, const arma::vec y, int m, double sigma, double alpha, double beta, double ll0)
 {
-  Rcpp::NumericVector prob  = Rcpp::runif(1);
-  double lp    = std::log(prob[0]);
-  double ratio = mhRatio(tree,treeNew,W,X,y,m,sigma,alpha,beta);
-  bool acc = lp <= ratio;
+  double prob  = R::runif(0.0,1.0);
+  double ratio = mhRatio(tree,treeNew,W,X,y,m,sigma,alpha,beta,ll0);
+  bool acc = std::log(prob) <= ratio;
   Rcpp::List out;
   if (acc)
     {

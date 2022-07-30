@@ -9,16 +9,16 @@ void getAvalSplits(Rcpp::List tree, Rcpp::List& splits);
 Rcpp::List avalSplits(Rcpp::List tree, Rcpp::List& splits);
 // Tree information
 // List and count bottom nodes
-void getBottomNodes(Rcpp::List tree, Rcpp::NumericVector& botVec);
-Rcpp::NumericVector bottomNodes(Rcpp::List tree);
+void getBottomNodes(Rcpp::List tree, std::vector<int>& botVec);
+arma::vec bottomNodes(Rcpp::List tree);
 int nBottomNodes(Rcpp::List tree);
 // List and count no-grandchildren nodes
-void getNogNodes(Rcpp::List tree, Rcpp::NumericVector& nogVec);
-Rcpp::NumericVector nogNodes(Rcpp::List tree);
+void getNogNodes(Rcpp::List tree, std::vector<int>& nogVec);
+arma::vec nogNodes(Rcpp::List tree);
 int nNogNodes(Rcpp::List tree);
 // List and count internal nodes
-void getInternalNodes(Rcpp::List tree, Rcpp::NumericVector& intVec);
-Rcpp::NumericVector internalNodes(Rcpp::List tree);
+void getInternalNodes(Rcpp::List tree, std::vector<int>& intVec);
+arma::vec internalNodes(Rcpp::List tree);
 int nInternalNodes(Rcpp::List tree);
 // List and count parent-child node pairs
 void getPCNodes(Rcpp::List tree, Rcpp::List& pcList);

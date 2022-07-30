@@ -1,5 +1,6 @@
 #include "tree.h"
 
+// Create node
 // [[Rcpp::export]]
 Rcpp::List node(int nodeID, int splitVar, int splitVal) // Create node
 {
@@ -7,13 +8,16 @@ Rcpp::List node(int nodeID, int splitVar, int splitVal) // Create node
 				       Rcpp::Named("left") = Rcpp::List::create(), Rcpp::Named("right") = Rcpp::List::create());
   return(node);
 }
+
+// Data information
 // [[Rcpp::export]]
 Rcpp::List splits(const arma::mat& W)
 {
-  Rcpp::List s = Rcpp::List::create();
+  Rcpp::List s;
   for (int i=0; i<W.n_cols; i++)
     {
-      s.push_back(W.col(i),std::to_string(i+1));
+      Rcpp::NumericVector col = Rcpp::as<Rcpp::NumericVector>(Rcpp::wrap(W.col(i)));
+      s.push_back(col,std::to_string(i+1));
     }
   return(s);
 }
@@ -33,6 +37,7 @@ void getAvalSplits(Rcpp::List tree, Rcpp::List& splits)
   getAvalSplits(right, splits);
 }
 
+// [[Rcpp::export]]
 Rcpp::List avalSplits(Rcpp::List tree, Rcpp::List& splits)
 {
   int nvar = splits.length();
@@ -52,7 +57,9 @@ Rcpp::List avalSplits(Rcpp::List tree, Rcpp::List& splits)
   return(splits);
 }
 
-void getBottomNodes(Rcpp::List tree, Rcpp::NumericVector& botVec)
+// Tree information
+// List and count bottom nodes
+void getBottomNodes(Rcpp::List tree, std::vector<int>& botVec)
 {
   int id = tree["id"];
   Rcpp::List left  = tree["left"];
@@ -67,13 +74,16 @@ void getBottomNodes(Rcpp::List tree, Rcpp::NumericVector& botVec)
     }
 }
 
-Rcpp::NumericVector bottomNodes(Rcpp::List tree)
+// [[Rcpp::export]]
+arma::vec bottomNodes(Rcpp::List tree)
 {
-  Rcpp::NumericVector out;
+  std::vector<int> out;
   getBottomNodes(tree,out);
-  return(out);
+  arma::vec outArma = arma::conv_to<arma::vec>::from(out);
+  return(outArma);
 }
 
+// [[Rcpp::export]]
 int nBottomNodes(Rcpp::List tree)
 {
   Rcpp::List left  = tree["left"];
@@ -82,7 +92,8 @@ int nBottomNodes(Rcpp::List tree)
   return(1);
 }
 
-void getNogNodes(Rcpp::List tree, Rcpp::NumericVector& nogVec)
+// List and count no-grandchildren nodes
+void getNogNodes(Rcpp::List tree, std::vector<int>& nogVec)
 {
   int id = tree["id"];
   Rcpp::List left  = tree["left"];
@@ -97,13 +108,16 @@ void getNogNodes(Rcpp::List tree, Rcpp::NumericVector& nogVec)
     }
 }
 
-Rcpp::NumericVector nogNodes(Rcpp::List tree)
+// [[Rcpp::export]]
+arma::vec nogNodes(Rcpp::List tree)
 {
-  Rcpp::NumericVector out;
+  std::vector<int> out;
   getNogNodes(tree,out);
-  return(out);
+  arma::vec outArma = arma::conv_to<arma::vec>::from(out);
+  return(outArma);
 }
 
+// [[Rcpp::export]]
 int nNogNodes(Rcpp::List tree)
 {
   Rcpp::List left  = tree["left"];
@@ -120,7 +134,8 @@ int nNogNodes(Rcpp::List tree)
   return(0);
 }
 
-void getInternalNodes(Rcpp::List tree, Rcpp::NumericVector& intVec)
+// List and count internal nodes
+void getInternalNodes(Rcpp::List tree, std::vector<int>& intVec)
 {
   int id = tree["id"];
   Rcpp::List left  = tree["left"];
@@ -140,13 +155,16 @@ void getInternalNodes(Rcpp::List tree, Rcpp::NumericVector& intVec)
     }
 }
 
-Rcpp::NumericVector internalNodes(Rcpp::List tree)
+// [[Rcpp::export]]
+arma::vec internalNodes(Rcpp::List tree)
 {
-  Rcpp::NumericVector out;
+  std::vector<int> out;
   getInternalNodes(tree,out);
-  return(out);
+  arma::vec outArma = arma::conv_to<arma::vec>::from(out);
+  return(outArma);
 }
 
+// [[Rcpp::export]]
 int nInternalNodes(Rcpp::List tree)
 {
   int id = tree["id"];
@@ -188,6 +206,7 @@ void getPCNodes(Rcpp::List tree, Rcpp::List& pcList)
     }
 }
 
+// [[Rcpp::export]]
 Rcpp::List pcNodes(Rcpp::List tree)
 {
   Rcpp::List out;
@@ -195,6 +214,7 @@ Rcpp::List pcNodes(Rcpp::List tree)
   return(out);
 }
 
+// [[Rcpp::export]]
 int nPCNodes(Rcpp::List tree)
 {
   int id = tree["id"];
@@ -211,6 +231,8 @@ int nPCNodes(Rcpp::List tree)
   return(0);
 }
 
+// Node depth
+// [[Rcpp::export]]
 int nodeDepth(int nodeID)
 {
   // This depends on the structure of the tree being: node i is parent of node 2i and 2i+1
@@ -219,12 +241,17 @@ int nodeDepth(int nodeID)
   return(1 + nodeDepth(val));
 }
 
+// Node split probability
+// [[Rcpp::export]]
 double pSplit(int nodeID, double alpha, double beta)
 {
   int d = nodeDepth(nodeID);
   return(alpha/std::pow(1+d,beta));
 }
 
+// Tree probability
+// Probability of all splits
+// [[Rcpp::export]]
 double pAllSplits(Rcpp::List tree, double alpha, double beta)
 {
   int id = tree["id"];
@@ -234,6 +261,8 @@ double pAllSplits(Rcpp::List tree, double alpha, double beta)
   return(pSplit(id,alpha,beta)*pAllSplits(left,alpha,beta)*pAllSplits(right,alpha,beta));
 }
 
+// Probability of chosen split rules
+// [[Rcpp::export]]
 double pRules(Rcpp::List tree, Rcpp::List& splits)
 {
   int id  = tree["id"];
@@ -242,9 +271,16 @@ double pRules(Rcpp::List tree, Rcpp::List& splits)
   Rcpp::List left  = tree["left"];
   Rcpp::List right = tree["right"];
   if (left.length() == 0) return(1); // Reached bottom node
+  // //
+  // std::cout << var << '\n';
+  // //
+  // int val = tree["val"];
+  // //
+  // std::cout << val << '\n';
+  // //
   double nvar = splits.length();
   Rcpp::NumericVector svar = splits[var-1];
-  if (svar.length() == 2) splits.erase(var-1); // If all possible values have been chosen for var, remove it from available splits
+  if (svar.length() == 0) splits.erase(var-1); // If all possible values have been chosen for var, remove it from available splits
   double nval = svar.length() - 2; // Remove max and min values to avoid empty nodes
   double total = nvar*nval;
   svar.erase(val-1);
@@ -252,7 +288,11 @@ double pRules(Rcpp::List tree, Rcpp::List& splits)
   return(pRules(left,splits)*pRules(right,splits)/total);
 }
 
+// Tree probability
+// [[Rcpp::export]]
 double pTree(Rcpp::List tree, Rcpp::List splits, double alpha, double beta)
 {
-  return(pAllSplits(tree,alpha,beta)*pRules(tree,splits));
+  double ps = pAllSplits(tree,alpha,beta);
+  double pr = pRules(tree,splits);
+  return ps*pr;
 }
