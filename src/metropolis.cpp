@@ -9,7 +9,7 @@ arma::mat lambdaPosteriorOne(const arma::mat& Xnode, int m, double sigma)
 {
   int k = Xnode.n_cols;
   arma::mat priorInv = arma::eye(k,k);
-  priorInv.diag() *= 100*m;
+  priorInv.diag() *= m;
   arma::mat XtX = Xnode.t()*Xnode/sigma;
   arma::mat out = arma::inv(priorInv+XtX);
   return(out);
@@ -18,14 +18,14 @@ arma::mat lambdaPosteriorOne(const arma::mat& Xnode, int m, double sigma)
 // [[Rcpp::export]]
 Rcpp::List lambdaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, int m, double sigma)
 {
-  Rcpp::List out;
   arma::vec yfit = fit(tree,W);
   arma::vec bn = bottomNodes(tree);
   Rcpp::List splitList = splitMatrix(X,yfit,bn);
-  for (int i=0; i<splitList.length(); i++)
+  Rcpp::List out = Rcpp::clone(splitList); // So I don't have to create empty tree and push_back (less efficient)
+  for (int i=0; i<out.length(); i++)
     {
       arma::mat Xi = splitList[i];
-      out.push_back(lambdaPosteriorOne(Xi,m,sigma));
+      out[i] = lambdaPosteriorOne(Xi,m,sigma);
     }
   return out;
 }
@@ -40,17 +40,17 @@ arma::vec thetaPosteriorOne(const arma::mat& X, const arma::vec& y, const arma::
 // [[Rcpp::export]]
 Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, Rcpp::List Lambda, double sigma)
 {
-  Rcpp::List out;
   arma::vec yfit = fit(tree,W);
   arma::vec bn = bottomNodes(tree);
   Rcpp::List splitListX = splitMatrix(X,yfit,bn);
   Rcpp::List splitListY = splitMatrix(y,yfit,bn);
-  for (int i=0; i<splitListX.length(); i++)
+  Rcpp::List out = Rcpp::clone(splitListX); // So I don't have to create empty list and push_back (less efficient)
+  for (int i=0; i<out.length(); i++)
     {
       arma::mat Xi = splitListX[i];
       arma::vec Yi = splitListY[i];
       arma::mat Lambdai = Lambda[i];
-      out.push_back(thetaPosteriorOne(Xi,Yi,Lambdai,sigma));
+      out[i] = thetaPosteriorOne(Xi,Yi,Lambdai,sigma);
     }
   return out;
 }
@@ -60,7 +60,7 @@ Rcpp::List thetaPosterior(Rcpp::List tree, const arma::mat& W, const arma::mat& 
 double logLikTree(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda)
 {
   int k = X.n_cols;
-  double logm = std::log(100*m)*k;
+  double logm = std::log(m)*k;
   arma::vec yfit = fit(tree,W);
   arma::vec bn = bottomNodes(tree);
   Rcpp::List splitListX = splitMatrix(X,yfit,bn);
@@ -92,7 +92,6 @@ double logLikTree(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const
 double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const arma::mat& X, const arma::vec y, int m, double sigma, double alpha, double beta, double ll0)
 {
   int move = treeNew["move"];
-  std::cout << move << '\n';
   Rcpp::List tree1 = treeNew["tree"];
   Rcpp::List Lambda1 = lambdaPosterior(tree1,W,X,m,sigma);
   Rcpp::List theta1 = thetaPosterior(tree1,W,X,y,Lambda1,sigma);
@@ -111,13 +110,16 @@ double mhRatio(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, const ar
       int bot = nBottomNodes(tree1);
       int nog = nNogNodes(tree);
       return std::log(nog)-std::log(bot)+std::log(1-p)-std::log(p)+ll1-ll0;
-    } else
+    } else if (move == 3)
     {
       Rcpp::List s = splits(W);
       Rcpp::List s1 = Rcpp::clone(s);
       double p0 = pTree(tree,s,alpha,beta);
       double p1 = pTree(tree1,s1,alpha,beta);
       return ll1-ll0+std::log(p1)-std::log(p0);
+    } else
+    {
+      return ll1-ll0;
     }
 }
 
@@ -128,16 +130,16 @@ Rcpp::List newTree(Rcpp::List tree, Rcpp::List treeNew, const arma::mat& W, cons
   double prob  = R::runif(0.0,1.0);
   double ratio = mhRatio(tree,treeNew,W,X,y,m,sigma,alpha,beta,ll0);
   bool acc = std::log(prob) <= ratio;
-  Rcpp::List out;
+  Rcpp::List out = Rcpp::List::create(Rcpp::_["tree"] = Rcpp::List::create(), Rcpp::_["Acc"] = NA_LOGICAL);
   if (acc)
     {
       Rcpp::List tree1 = treeNew["tree"];
-      out.push_back(tree1,"tree");
-      out.push_back(acc, "Acc");
+      out["tree"] = tree1;
+      out["Acc"]  = acc;
     } else
     {
-      out.push_back(tree,"tree");
-      out.push_back(acc, "Acc");
+      out["tree"] = tree;
+      out["Acc"]  = acc;
     }
   return(out);
 }

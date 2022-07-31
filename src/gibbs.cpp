@@ -9,10 +9,12 @@
 // [[Rcpp::export]]
 Rcpp::List thetaDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const arma::vec& y, int m, double sigma, Rcpp::List theta, Rcpp::List Lambda)
 {
-  Rcpp::List out;
-  for (int i=0; i<theta.length(); i++)
+  Rcpp::List out = Rcpp::clone(theta); // So I don't have to create empty list and use push_back (less efficient)
+  for (int i=0; i<out.length(); i++)
     {
-      out.push_back(mvrnormArma(1,theta[i],Lambda[i]));
+      arma::vec ti = theta[i];
+      arma::mat Li = Lambda[i];
+      out[i] = mvrnormArma(1,ti,Li);
     }
   return out;
 }
@@ -28,7 +30,7 @@ arma::mat yDraw(Rcpp::List tree, const arma::mat& W, const arma::mat& X, const a
   for (int i=0; i<nobs; i++)
     {
       arma::rowvec w = W.row(i);
-      arma::uvec which = arma::find(bn == yFit[i]);
+      arma::uvec which = arma::find(bn == yFit(i));
       int whichInt = arma::conv_to<int>::from(which);
       arma::mat draw = draws[whichInt];
       out.row(i) = draw;
